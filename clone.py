@@ -39,14 +39,18 @@ model = Sequential()
 model.add(Lambda(lambda x: x / 255.0 - 0.5, input_shape = (160,320,3)))
 model.add(Cropping2D(cropping=((70,0),(0,0))))
 from keras.applications.inception_v3 import InceptionV3
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 
-model.add(InceptionV3(weights='imagenet', include_top=False))
-#model.add(Dropout(0.5))
+model.add(InceptionV3(weights='imagenet', include_top=False, pooling=max))
+model.add(Dropout(0.5))
 model.add(Flatten())
 model.add(Dense(1))
+model.summary()
 
 model.compile(loss = 'mse' , optimizer = 'adam')
-history_object=model.fit(x_train, y_train, validation_split=0.2, shuffle = True, epochs = 2)
+es = EarlyStopping(monitor='val_loss', mode='min', verbose=1)
+mc = ModelCheckpoint('model.h5', monitor='val_loss', mode='min', verbose=1, save_best_only=True)
+history_object=model.fit(x_train, y_train, validation_split=0.2, shuffle = True, batch_size=128, epochs = 10, callbacks=[es, mc])
 #model.fit(x_train, y_train, epochs = 7)
 model.save('model.h5')
 
