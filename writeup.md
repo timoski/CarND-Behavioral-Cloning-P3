@@ -84,6 +84,8 @@ The final step was to run the simulator to see how well the car was driving arou
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
+Here's a [link to my video result](./run1/output_video.mp4)
+
 #### 2. Final Model Architecture
 
 My model is based on InterceptionV3.
@@ -106,5 +108,6 @@ I finally randomly shuffled the data set and put 20% of the data into a validati
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 2:
 ![image1][image1]
+
 I used an adam optimizer so that manually training the learning rate wasn't necessary.
 
